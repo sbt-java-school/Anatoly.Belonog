@@ -1,4 +1,4 @@
-package Sockets;
+package Sockets.Messages;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -6,10 +6,10 @@ import java.util.Objects;
 /**
  * Created by Anatoly on 02.10.2016.
  */
-class MessageBox {
+public class MessageBox {
     private final ArrayList<RecipientMessages> recipientsMessages;
 
-    MessageBox() {
+    public MessageBox() {
         recipientsMessages = new ArrayList<>();
     }
 
@@ -26,7 +26,7 @@ class MessageBox {
         return recipientMessages;
     }
 
-    void put(String recipient, String sender, String message) {
+    public void put(String recipient, String sender, String message) {
         for (RecipientMessages messages:
              recipientsMessages) {
             if (Objects.equals(messages.getName(), recipient)) {
@@ -36,11 +36,11 @@ class MessageBox {
         }
     }
 
-    ArrayList<String> getAllMessangesToRecipient(String name) {
+    public ArrayList<String> getAllMessangesToRecipient(String name) {
         return getRecipientMessages(name).getAllMessagesWithSender();
     }
 
-    void tryAddClient(String clientName) {
+    public void tryAddClient(String clientName) {
         for (RecipientMessages messages:
                 recipientsMessages) {
             if (Objects.equals(messages.getName(), clientName)) {

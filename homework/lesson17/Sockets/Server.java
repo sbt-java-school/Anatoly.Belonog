@@ -1,19 +1,23 @@
-package Sockets;
+package Sockets.Server;
+
+import Sockets.Messages.MessageBox;
+import com.sun.corba.se.spi.orbutil.threadpool.ThreadPool;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by Anatoly on 02.10.2016.
  */
 class Server {
+    public static final int NUMBER_OF_THREADS = 1;
     private final int port;
     private final MessageBox messageBox;
+    private final ExecutorService service = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     Server(int port) {
         this.port = port;
@@ -32,7 +36,8 @@ class Server {
         Socket clientSocket;
         while(!serverSocket.isClosed()) {
             if ((clientSocket = serverSocket.accept()) != null) {
-                new Thread(new ServerTask(clientSocket, messageBox)).start();
+                service.submit(new ServerTask(clientSocket, messageBox));
+                //new Thread(new ServerTask(clientSocket, messageBox)).start();
             }
         }
     }

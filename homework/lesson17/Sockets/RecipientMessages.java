@@ -1,4 +1,4 @@
-package Sockets;
+package Sockets.Messages;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -1,4 +1,6 @@
-package Sockets;
+package Sockets.Client;
+
+import Sockets.Commands.CommandBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,42 +36,18 @@ class Client {
             System.out.println("Connected!");
             writeToServer(getName(), out);
             System.out.println(readFromServer(buffer, in));
-            String command = "";
+            String command;
             Scanner scanner = new Scanner(System.in);
-            while (!socket.isClosed()) {
+            CommandBuilder commandBuilder = new CommandBuilder();
+            boolean isExit = false;
+            while (!socket.isClosed() && !isExit) {
                 command = scanner.next();
                 writeToServer(command, out);     //write a command
-                if (Objects.equals(command, "read")) {
-                    handleCommandRead(buffer, in, out);
-                }
-                else if (Objects.equals(command, "send")) {
-                    handleCommandSend(buffer, in, out, scanner);
-                }
-                else if (Objects.equals(command, "exit")) {
-                    break;
-                }
-                else {
-                    System.out.println(readFromServer(buffer, in));
-                }
+                isExit = commandBuilder.build(command).handleClientCommand(out, in, getName());
                 System.out.println("Print a command: ");
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void handleCommandSend(byte[] buffer, InputStream in, OutputStream out, Scanner scanner) throws IOException {
-        System.out.println(readFromServer(buffer, in)); // to whom
-        writeToServer(scanner.next(), out);
-        System.out.println(readFromServer(buffer, in)); // message
-        writeToServer(scanner.next(), out);
-    }
-
-    private void handleCommandRead(byte[] buffer, InputStream in, OutputStream out) throws IOException {
-        int messagesNumber = Integer.parseInt(readFromServer(buffer, in));
-        for (int i = 0; i < messagesNumber + 1; i++) {
-            System.out.println(readFromServer(buffer, in));
-            writeToServer(String.valueOf(i), out);
         }
     }
 

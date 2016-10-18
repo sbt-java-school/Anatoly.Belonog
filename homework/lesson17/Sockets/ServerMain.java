@@ -1,10 +1,6 @@
-package Sockets;
+package Sockets.Server;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Created by Anatoly on 01.10.2016.
